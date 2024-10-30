@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,6 +105,7 @@ public class Admin extends AppCompatActivity
                 Toast.makeText(Admin.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
+        adapListView.notifyDataSetChanged();
     }
 
     public void Lammoi(View view) {
@@ -115,18 +118,187 @@ public class Admin extends AppCompatActivity
         dtbAccount = openOrCreateDatabase("Account.db", MODE_PRIVATE, null);
         arrAcc.clear();
 
-        //
+
         Cursor cur = dtbAccount.query("tblAccount", null, null, null, null, null, null);
-        // Kiểm tra nếu cursor có dữ liệu
-        if (cur.moveToFirst()) { // Di chuyển đến bản ghi đầu tiên
+        if (cur.moveToFirst()) {
             do {
                 String data = cur.getString(0) + " - " + cur.getString(1) + " - " + cur.getInt(2); // Sử dụng getInt cho siso
                 arrAcc.add(data);
-            } while (cur.moveToNext()); // Di chuyển đến bản ghi tiếp theo
+            } while (cur.moveToNext());
         }
         cur.close();
         adapListView.notifyDataSetChanged();
     }
+    ArrayList<String> arrMon;
+    ArrayAdapter<String> adapMon;
+    SQLiteDatabase dtbAccount_mon;
+    //Quản lý menu
+    public void Khaivi1(View view) {
+        AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
+        LayoutInflater inflater = Admin.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.khaivi_admin, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
+        dtbAccount_mon = openOrCreateDatabase("Food.db", MODE_PRIVATE, null);
+        try{
+            String sql = "CREATE TABLE tblKhaivi(Tenmon Text primary key, Giatien Integer)";
+            dtbAccount_mon.execSQL(sql);
+        }
+        catch (Exception e) {
+            Log.e("Error", "Table đã có sẵn");
+        }
+        Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
+        Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
+        ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
+        ListView LstVGiatien = dialog.findViewById(R.id.LstVGiatien);
+        arrMon = new ArrayList<>();
+        adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
+        LstVTenmon.setAdapter(adapMon);
+        LstVGiatien.setAdapter(adapMon);
 
+        btnThemmon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad1 = new AlertDialog.Builder(Admin.this);
+                LayoutInflater inflater1 = Admin.this.getLayoutInflater();
+                View dialog1 = inflater1.inflate(R.layout.manage_food, null);
+                ad1 .setView(dialog1);
+                AlertDialog b1 = ad1.create();
+                b1.show();
+                EditText edtTenmon = dialog1.findViewById(R.id.edtTenmon);
+                EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
+                Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
+                btnUpdateMon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String Tenmon = edtTenmon.getText().toString();
+                        int Giatien = Integer.parseInt(edtGiatien.getText().toString());
+                        ContentValues values = new ContentValues();
+                        values.put("Tenmon", Tenmon);
+                        values.put("Giatien", Giatien);
+                        String tb = "";
+                        if(dtbAccount_mon.insert("tblKhaivi", null, values) > 0){
+                            tb = "Thêm món ăn thành công";
+                        }
+                        else{
+                            tb = "Thêm món ăn không thành công";
+                        }
+                        Toast.makeText(Admin.this, tb, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnLammoimon1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrMon.clear();
+                Cursor cur = dtbAccount_mon.query("tblKhaivi", null, null, null, null, null, null);
+                if (cur != null && cur.moveToFirst()) {
+                    int indexTenmon = cur.getColumnIndex("Tenmon");
+                    int indexGiatien = cur.getColumnIndex("Giatien");
+
+                    if (indexTenmon >= 0 && indexGiatien >= 0) {
+                        do {
+                            String Tenmon = cur.getString(indexTenmon);
+                            int Giatien = cur.getInt(indexGiatien);
+                            String data = Tenmon + " - " + Giatien;
+                            arrMon.add(data);
+                        } while (cur.moveToNext());
+                    } else {
+                        Log.e("Error", "Tên cột không hợp lệ");
+                    }
+                }
+                if (cur != null) {
+                    cur.close();
+                }
+                adapMon.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void Monchinh1(View view) {
+        AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
+        LayoutInflater inflater = Admin.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.chinh_admin, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
+        dtbAccount_mon = openOrCreateDatabase("Food.db", MODE_PRIVATE, null);
+        try{
+            String sql = "CREATE TABLE tblMonchinh(Tenmon Text primary key, Giatien Integer)";
+            dtbAccount_mon.execSQL(sql);
+        }
+        catch (Exception e) {
+            Log.e("Error", "Table đã có sẵn");
+        }
+        Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
+        Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
+        ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
+        ListView LstVGiatien = dialog.findViewById(R.id.LstVGiatien);
+        arrMon = new ArrayList<>();
+        adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
+        LstVTenmon.setAdapter(adapMon);
+        LstVGiatien.setAdapter(adapMon);
+
+        btnThemmon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad1 = new AlertDialog.Builder(Admin.this);
+                LayoutInflater inflater1 = Admin.this.getLayoutInflater();
+                View dialog1 = inflater1.inflate(R.layout.manage_food, null);
+                ad1 .setView(dialog1);
+                AlertDialog b1 = ad1.create();
+                b1.show();
+                EditText edtTenmon = dialog1.findViewById(R.id.edtTenmon);
+                EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
+                Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
+                btnUpdateMon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String Tenmon = edtTenmon.getText().toString();
+                        int Giatien = Integer.parseInt(edtGiatien.getText().toString());
+                        ContentValues values = new ContentValues();
+                        values.put("Tenmon", Tenmon);
+                        values.put("Giatien", Giatien);
+                        String tb = "";
+                        if(dtbAccount_mon.insert("tblMonchinh", null, values) > 0){
+                            tb = "Thêm món ăn thành công";
+                        }
+                        else{
+                            tb = "Thêm món ăn không thành công";
+                        }
+                        Toast.makeText(Admin.this, tb, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnLammoimon1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrMon.clear();
+                Cursor cur = dtbAccount_mon.query("tblMonchinh", null, null, null, null, null, null);
+                if (cur != null && cur.moveToFirst()) {
+                    int indexTenmon = cur.getColumnIndex("Tenmon");
+                    int indexGiatien = cur.getColumnIndex("Giatien");
+
+                    if (indexTenmon >= 0 && indexGiatien >= 0) {
+                        do {
+                            String Tenmon = cur.getString(indexTenmon);
+                            int Giatien = cur.getInt(indexGiatien);
+                            String data = Tenmon + " - " + Giatien;
+                            arrMon.add(data);
+                        } while (cur.moveToNext());
+                    } else {
+                        Log.e("Error", "Tên cột không hợp lệ");
+                    }
+                }
+                if (cur != null) {
+                    cur.close();
+                }
+                adapMon.notifyDataSetChanged();
+            }
+        });
+    }
 }
 

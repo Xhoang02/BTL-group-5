@@ -30,6 +30,5 @@
         <activity
             android:name=".Admin"
             android:exported="true" />
-
     </application>
 </manifest>

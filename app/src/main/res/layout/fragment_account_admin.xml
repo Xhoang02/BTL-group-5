@@ -53,30 +53,11 @@
                 <Button
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Sửa TK"
-                    android:id="@+id/btnSua"
-                    android:layout_margin="5sp"
-                    android:background="@drawable/border_background"/>
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
                     android:text="Làm mới"
                     android:id="@+id/btnLammoi"
                     android:layout_margin="5sp"
                     android:background="@drawable/border_background"
                     android:onClick="Lammoi"/>
-                <Button
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Xóa TK"
-                    android:id="@+id/btnXoa"
-                    android:layout_margin="5sp"
-                    android:background="@drawable/border_background"
-                    android:onClick="Xoa"/>
             </TableRow>
         </TableLayout>
         <ListView

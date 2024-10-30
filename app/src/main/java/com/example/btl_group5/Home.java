@@ -54,14 +54,6 @@ public class Home extends AppCompatActivity
         Intent i = new Intent(Home.this, khai_vi.class);
         startActivity(i);
     }
-    public void Monphu(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
-    }
-    public void Monannhanh(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
-    }
     public void Montrangmieng(View view) {
         Intent i = new Intent(Home.this, khai_vi.class);
         startActivity(i);

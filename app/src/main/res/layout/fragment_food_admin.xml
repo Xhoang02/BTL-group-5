@@ -9,22 +9,132 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/yellow">
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Manage food"
+            android:text="Manage Food Restaurant"
             android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:background="@color/yellow"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/gray"
+        android:paddingTop="35dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:orientation="vertical">
 
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+                <LinearLayout
+                    android:layout_height="125dp"
+                    android:layout_width="125dp"
+                    android:background="@drawable/radius_ic"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:id="@+id/lnKhaivi1"
+                    android:onClick="Khaivi1">
+                    <ImageView
+                        android:layout_marginTop="15dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/drink"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Món khai vị"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="125dp"
+                    android:layout_width="125dp"
+                    android:background="@drawable/radius_ic"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:id="@+id/lnMonchinh1"
+                    android:onClick="Monchinh1">
+
+                    <ImageView
+                        android:layout_marginTop="15dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/drink"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Món chính"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:stretchColumns="*"
+            android:layout_marginTop="15dp">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+                <LinearLayout
+                    android:layout_height="125dp"
+                    android:layout_width="125dp"
+                    android:background="@drawable/radius_ic"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:id="@+id/lnMontrangmieng1"
+                    android:onClick="Montrangmieng1">
+                    <ImageView
+                        android:layout_marginTop="15dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/drink"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Món tráng miệng"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="125dp"
+                    android:layout_width="125dp"
+                    android:background="@drawable/radius_ic"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:id="@+id/lnDouong1"
+                    android:onClick="Douong1">
+                    <ImageView
+                        android:layout_marginTop="15dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/drink"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Đồ uống"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 </LinearLayout>

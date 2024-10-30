@@ -38,26 +38,6 @@ public class Fragment_menu extends Fragment {
                         .commit();
             }
         });
-        view.findViewById(R.id.lnMonphu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Mon_phu monPhu = new Mon_phu();
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.flFragment, monPhu)
-                        .addToBackStack(null) // Thêm vào back stack
-                        .commit();
-            }
-        });
-        view.findViewById(R.id.lnMonannhanh).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Mon_an_nhanh monAnNhanh = new Mon_an_nhanh();
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.flFragment, monAnNhanh)
-                        .addToBackStack(null) // Thêm vào back stack
-                        .commit();
-            }
-        });
         view.findViewById(R.id.lnMontrangmieng).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

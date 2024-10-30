@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -78,59 +78,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Món chính"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:stretchColumns="*"
-            android:layout_marginTop="15dp">
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="130dp">
-                <LinearLayout
-                    android:layout_height="125dp"
-                    android:layout_width="125dp"
-                    android:background="@drawable/radius_ic"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical"
-                    android:id="@+id/lnMonphu"
-                    android:onClick="Monphu">
-                    <ImageView
-                        android:layout_marginTop="15dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/drink"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Món phụ"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_height="125dp"
-                    android:layout_width="125dp"
-                    android:background="@drawable/radius_ic"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp"
-                    android:id="@+id/lnMonannhanh"
-                    android:onClick="Monannhanh">
-                    <ImageView
-                        android:layout_marginTop="15dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/drink"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Món ăn nhanh"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </TableRow>
