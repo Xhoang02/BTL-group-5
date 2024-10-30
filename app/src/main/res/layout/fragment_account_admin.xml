@@ -24,13 +24,67 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray">
+        android:orientation="vertical">
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            />
+            android:background="@color/gray"/>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:stretchColumns="*">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Thêm TK"
+                    android:id="@+id/btnThem"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/border_background"
+                    android:onClick="ThemTK"/>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Sửa TK"
+                    android:id="@+id/btnSua"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/border_background"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Làm mới"
+                    android:id="@+id/btnLammoi"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/border_background"
+                    android:onClick="Lammoi"/>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Xóa TK"
+                    android:id="@+id/btnXoa"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/border_background"
+                    android:onClick="Xoa"/>
+            </TableRow>
+        </TableLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/LstVAccount">
+
+        </ListView>
     </LinearLayout>
 </LinearLayout>
