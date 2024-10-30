@@ -71,7 +71,7 @@ public class Admin extends AppCompatActivity
         b.show();
 
         //Khai báo tìm ID
-        Button btnThemTK= dialog1.findViewById(R.id.btnThemTK);
+        Button btnThemTK = dialog1.findViewById(R.id.btnThemTK);
         ListView LstVAccount = findViewById(R.id.LstVAccount);
         EditText edtUsername = dialog1.findViewById(R.id.edtUsernameCR);
         EditText edtEmail = dialog1.findViewById(R.id.edtEmailCR);
@@ -96,13 +96,13 @@ public class Admin extends AppCompatActivity
                 values.put("Phone", Phone);
                 values.put("Password", Password);
                 String msg = "";
-                if(dtbAccount.insert("tblAccount", null, values) > 0 ){
+                if (dtbAccount.insert("tblAccount", null, values) > 0) {
                     msg = "Tạo tài khoản thành công";
-                }
-                else{
+                } else {
                     msg = "Tạo tài khoản không thành công";
                 }
                 Toast.makeText(Admin.this, msg, Toast.LENGTH_SHORT).show();
+
             }
         });
         adapListView.notifyDataSetChanged();
@@ -113,22 +113,110 @@ public class Admin extends AppCompatActivity
         ArrayList<String> arrAcc = new ArrayList<>();
         ArrayAdapter<String> adapListView = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrAcc);
         SQLiteDatabase dtbAccount;
-        //Thêm adapter vào listview
+
+        // Thêm adapter vào listview
         LstVAccount.setAdapter(adapListView);
         dtbAccount = openOrCreateDatabase("Account.db", MODE_PRIVATE, null);
         arrAcc.clear();
 
-
+        // Lấy dữ liệu từ bảng
         Cursor cur = dtbAccount.query("tblAccount", null, null, null, null, null, null);
+
+        // Kiểm tra nếu cursor có dữ liệu
+        cur = dtbAccount.query("tblAccount", null, null, null, null, null, null);
         if (cur.moveToFirst()) {
             do {
-                String data = cur.getString(0) + " - " + cur.getString(1) + " - " + cur.getInt(2); // Sử dụng getInt cho siso
+                String data = cur.getString(0) + " - " + cur.getString(1) + " - " + cur.getInt(2);
                 arrAcc.add(data);
             } while (cur.moveToNext());
         }
         cur.close();
         adapListView.notifyDataSetChanged();
+        LstVAccount.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Lấy dữ liệu của tài khoản được chọn
+                String selectedAccount = arrAcc.get(position);
+                String[] accountDetails = selectedAccount.split(" - ");
+                String username = accountDetails[0];
+                String email = accountDetails[1];
+                String phone = accountDetails[2];
+
+                // Hiển thị hộp thoại để sửa tài khoản
+                AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
+                LayoutInflater inflater = Admin.this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_themtk, null);
+                ad.setView(dialogView);
+                AlertDialog dialog = ad.create();
+                dialog.show();
+
+                // Khai báo các thành phần trong hộp thoại
+
+                EditText edtUsername = dialogView.findViewById(R.id.edtUsernameCR);
+                EditText edtEmail = dialogView.findViewById(R.id.edtEmailCR);
+                EditText edtPhone = dialogView.findViewById(R.id.edtPhoneCR);
+                EditText edtPassword = dialogView.findViewById(R.id.edtPasswordCR);
+                Button btnUpdate = dialogView.findViewById(R.id.btnThemTK);
+
+                // Điền dữ liệu cũ vào các EditText
+                edtUsername.setText(username);
+                edtEmail.setText(email);
+                edtPhone.setText(String.valueOf(phone)); // Chuyển đổi số thành chuỗi
+
+                // Cập nhật tài khoản khi nhấn nút sửa
+                btnUpdate.setOnClickListener(v -> {
+                    String newUsername = edtUsername.getText().toString();
+                    String newEmail = edtEmail.getText().toString();
+                    int newPhone = Integer.parseInt(edtPhone.getText().toString());
+                    String newPassword = edtPassword.getText().toString(); // Nếu bạn muốn cho phép thay đổi mật khẩu
+
+                    // Cập nhật cơ sở dữ liệu
+                    ContentValues values = new ContentValues();
+                    values.put("Username", newUsername);
+                    values.put("Email", newEmail);
+                    values.put("Phone", newPhone);
+                    if (!newPassword.isEmpty()) {
+                        values.put("Password", newPassword);
+                    }
+
+                    // Cập nhật bản ghi trong bảng
+                    dtbAccount.update("tblAccount", values, "Username = ?", new String[]{username});
+
+                    // Cập nhật danh sách và đóng hộp thoại
+                    arrAcc.set(position, newUsername + " - " + newEmail + " - " + newPhone);
+                    adapListView.notifyDataSetChanged();
+                    dialog.dismiss();
+                    Toast.makeText(Admin.this, "Cập nhật tài khoản thành công", Toast.LENGTH_SHORT).show();
+                });
+
+                // Thêm sự kiện nhấn và giữ vào ListView
+                LstVAccount.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        // Hiển thị hộp thoại xác nhận
+                        new AlertDialog.Builder(Admin.this)
+                                .setTitle("Xóa tài khoản")
+                                .setMessage("Bạn có chắc chắn muốn xóa tài khoản này?")
+                                .setPositiveButton("Có", (dialog, which) -> {
+                                    // Xóa tài khoản
+                                    String[] accountDetails = arrAcc.get(position).split(" - ");
+                                    String usernameToDelete = accountDetails[0]; // Giả sử username là phần đầu tiên
+
+                                    // Xóa tài khoản khỏi database
+                                    dtbAccount.delete("tblAccount", "Username = ?", new String[]{usernameToDelete});
+                                    arrAcc.remove(position); // Loại bỏ tài khoản khỏi danh sách
+                                    adapListView.notifyDataSetChanged(); // Cập nhật ListView
+                                    Toast.makeText(Admin.this, "Tài khoản đã được xóa", Toast.LENGTH_SHORT).show();
+                                })
+                                .setNegativeButton("Không", null)
+                                .show();
+                        return true; // Trả về true để đánh dấu sự kiện đã được xử lý
+                    }
+                });
+            }
+        });
     }
+
     ArrayList<String> arrMon;
     ArrayAdapter<String> adapMon;
     SQLiteDatabase dtbAccount_mon;
@@ -301,4 +389,3 @@ public class Admin extends AppCompatActivity
         });
     }
 }
-
