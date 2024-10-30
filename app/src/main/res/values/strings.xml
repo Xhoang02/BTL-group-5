@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BTL-Group5</string>
+
+    <string name="home_fragment">Home fragment</string>
+    <string name="menu_fragment">Menu fragment</string>
+    <string name="shopping_cart_fragment">Shopping cart fragment</string>
+    <string name="account_fragment">Account fragment</string>
+
+</resources>
