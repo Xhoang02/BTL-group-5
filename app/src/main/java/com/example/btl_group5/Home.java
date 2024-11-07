@@ -2,10 +2,12 @@ package com.example.btl_group5;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,22 +47,41 @@ public class Home extends AppCompatActivity
         }
         return false; // Trả về false nếu không có item nào được chọn
     }
-
+    //Client click vào món khai vị
     public void Khaivi(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
+        AlertDialog.Builder ad = new AlertDialog.Builder(Home.this);
+        LayoutInflater inflater = Home.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.khaivi_client, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
     }
+    //Client click vào món chính
     public void Monchinh(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
+        AlertDialog.Builder ad = new AlertDialog.Builder(Home.this);
+        LayoutInflater inflater = Home.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.chinh_client, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
     }
+    //Client click vào món tráng miệng
     public void Montrangmieng(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
+        AlertDialog.Builder ad = new AlertDialog.Builder(Home.this);
+        LayoutInflater inflater = Home.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.trangmieng_client, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
     }
+    //Client click vào đồ uống
     public void Douong(View view) {
-        Intent i = new Intent(Home.this, khai_vi.class);
-        startActivity(i);
+        AlertDialog.Builder ad = new AlertDialog.Builder(Home.this);
+        LayoutInflater inflater = Home.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.douong_client, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
     }
 }
 

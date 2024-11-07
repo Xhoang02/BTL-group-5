@@ -16,49 +16,7 @@ public class Fragment_menu extends Fragment {
 
     }
 
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_menu, container, false);
-//        view.findViewById(R.id.lnKhaivi).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                khai_vi khaivi = new khai_vi();
-//                getParentFragmentManager().beginTransaction()
-//                        .replace(R.id.flFragment, khaivi)
-//                        .addToBackStack(null) // Thêm vào back stack
-//                        .commit();
-//            }
-//        });
-//        view.findViewById(R.id.lnMonchinh).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Mon_chinh monchinh = new Mon_chinh();
-//                getParentFragmentManager().beginTransaction()
-//                        .replace(R.id.flFragment, monchinh)
-//                        .addToBackStack(null) // Thêm vào back stack
-//                        .commit();
-//            }
-//        });
-//        view.findViewById(R.id.lnMontrangmieng).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                    Mon_trang_mieng trangMieng = new Mon_trang_mieng();
-//                getParentFragmentManager().beginTransaction()
-//                        .replace(R.id.flFragment, trangMieng)
-//                        .addToBackStack(null) // Thêm vào back stack
-//                        .commit();
-//            }
-//        });
-//        view.findViewById(R.id.lnDouong).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Do_uong doUong = new Do_uong();
-//                getParentFragmentManager().beginTransaction()
-//                        .replace(R.id.flFragment, doUong)
-//                        .addToBackStack(null) // Thêm vào back stack
-//                        .commit();
-//            }
-//        });
-//        return view;
-//
-//    }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_menu, container, false);
+    }
 }

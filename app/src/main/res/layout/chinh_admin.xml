@@ -43,12 +43,8 @@
         android:layout_height="400dp"
         android:orientation="horizontal">
         <ListView
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/LstVTenmon"/>
-        <ListView
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/LstVGiatien"/>
     </LinearLayout>
 </LinearLayout>

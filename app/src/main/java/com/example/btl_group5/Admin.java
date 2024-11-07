@@ -4,8 +4,12 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.ConsumerIrManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,11 +28,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Admin extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView1;
+    private android.graphics.BitmapFactory BitmapFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,8 +50,7 @@ public class Admin extends AppCompatActivity
     Fragment_food_admin food = new Fragment_food_admin();
     Fragment_shopping_admin shopping = new Fragment_shopping_admin();
     Fragment_account_admin account = new Fragment_account_admin();
-    //    @SuppressLint("NonConstantResourceId")
-//    @Override
+
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Lấy ID của item được chọn
         int selectedItemId = item.getItemId();
@@ -61,6 +70,7 @@ public class Admin extends AppCompatActivity
         return false;
     }
 
+    //Button thêm tài khoản
     public void ThemTK(View view) {
         //Alert Thêm tài khoản
         AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
@@ -107,7 +117,7 @@ public class Admin extends AppCompatActivity
         });
         adapListView.notifyDataSetChanged();
     }
-
+    //Button làm mới ListView
     public void Lammoi(View view) {
         ListView LstVAccount = findViewById(R.id.LstVAccount);
         ArrayList<String> arrAcc = new ArrayList<>();
@@ -126,7 +136,7 @@ public class Admin extends AppCompatActivity
         cur = dtbAccount.query("tblAccount", null, null, null, null, null, null);
         if (cur.moveToFirst()) {
             do {
-                String data = cur.getString(0) + " - " + cur.getString(1) + " - " + cur.getInt(2);
+                String data = cur.getString(0) + " - " + cur.getString(1) + " - " + cur.getInt(2) + " - " + cur.getInt(3);
                 arrAcc.add(data);
             } while (cur.moveToNext());
         }
@@ -220,7 +230,32 @@ public class Admin extends AppCompatActivity
     ArrayList<String> arrMon;
     ArrayAdapter<String> adapMon;
     SQLiteDatabase dtbAccount_mon;
+
+//    private static final int PICK_IMAGE = 1;
+//    private ImageView imageView;
+//    Uri selectedImageUri = null;
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+//            selectedImageUri = data.getData(); // Cập nhật biến selectedImageUri
+//            imageView.setImageURI(selectedImageUri);
+//        }
+//    }
+//    private void saveImageToDatabase(Uri imageUri) {
+//        try {
+//            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//        } catch (FileNotFoundException e) {
+////            e.printStackTrace();
+//        }
+//    }
+
     //Quản lý menu
+    //Admin click vào khai vị
     public void Khaivi1(View view) {
         AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
         LayoutInflater inflater = Admin.this.getLayoutInflater();
@@ -230,7 +265,7 @@ public class Admin extends AppCompatActivity
         b.show();
         dtbAccount_mon = openOrCreateDatabase("Food.db", MODE_PRIVATE, null);
         try{
-            String sql = "CREATE TABLE tblKhaivi(Tenmon Text primary key, Giatien Integer)";
+            String sql = "CREATE TABLE tblKhaivi(Tenmon Text primary key, Giatien Integer, Image Blob)";
             dtbAccount_mon.execSQL(sql);
         }
         catch (Exception e) {
@@ -239,11 +274,9 @@ public class Admin extends AppCompatActivity
         Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
         Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
         ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
-        ListView LstVGiatien = dialog.findViewById(R.id.LstVGiatien);
         arrMon = new ArrayList<>();
         adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
         LstVTenmon.setAdapter(adapMon);
-        LstVGiatien.setAdapter(adapMon);
 
         btnThemmon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +290,20 @@ public class Admin extends AppCompatActivity
                 EditText edtTenmon = dialog1.findViewById(R.id.edtTenmon);
                 EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
                 Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
+
+//                Button btnThemanh = dialog1.findViewById(R.id.btnThemanh);
+//                imageView = dialog1.findViewById(R.id.ImageView);
+
+//                btnThemanh.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                        intent.setType("image/*"); // Chỉ định loại tệp là hình ảnh
+//                        intent.addCategory(Intent.CATEGORY_OPENABLE); // Cho phép mở thư mục
+//                        startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), PICK_IMAGE);
+//                    }
+//                });
+
                 btnUpdateMon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -265,6 +312,20 @@ public class Admin extends AppCompatActivity
                         ContentValues values = new ContentValues();
                         values.put("Tenmon", Tenmon);
                         values.put("Giatien", Giatien);
+
+//                        if (selectedImageUri != null) {
+//                            try {
+//                                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+//                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//                                values.put("Image", imageBytes); // Lưu mảng byte vào cột Image
+//                            } catch (FileNotFoundException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+
                         String tb = "";
                         if(dtbAccount_mon.insert("tblKhaivi", null, values) > 0){
                             tb = "Thêm món ăn thành công";
@@ -304,7 +365,7 @@ public class Admin extends AppCompatActivity
             }
         });
     }
-
+    //Admin click vào món chính
     public void Monchinh1(View view) {
         AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
         LayoutInflater inflater = Admin.this.getLayoutInflater();
@@ -323,11 +384,9 @@ public class Admin extends AppCompatActivity
         Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
         Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
         ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
-        ListView LstVGiatien = dialog.findViewById(R.id.LstVGiatien);
         arrMon = new ArrayList<>();
         adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
         LstVTenmon.setAdapter(adapMon);
-        LstVGiatien.setAdapter(adapMon);
 
         btnThemmon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,6 +425,170 @@ public class Admin extends AppCompatActivity
             public void onClick(View view) {
                 arrMon.clear();
                 Cursor cur = dtbAccount_mon.query("tblMonchinh", null, null, null, null, null, null);
+                if (cur != null && cur.moveToFirst()) {
+                    int indexTenmon = cur.getColumnIndex("Tenmon");
+                    int indexGiatien = cur.getColumnIndex("Giatien");
+
+                    if (indexTenmon >= 0 && indexGiatien >= 0) {
+                        do {
+                            String Tenmon = cur.getString(indexTenmon);
+                            int Giatien = cur.getInt(indexGiatien);
+                            String data = Tenmon + " - " + Giatien;
+                            arrMon.add(data);
+                        } while (cur.moveToNext());
+                    } else {
+                        Log.e("Error", "Tên cột không hợp lệ");
+                    }
+                }
+                if (cur != null) {
+                    cur.close();
+                }
+                adapMon.notifyDataSetChanged();
+            }
+        });
+    }
+    //Admin click vào món tráng miệng
+    public void Montrangmieng1(View view) {
+        AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
+        LayoutInflater inflater = Admin.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.mon_trang_mieng_admin, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
+        dtbAccount_mon = openOrCreateDatabase("Food.db", MODE_PRIVATE, null);
+        try{
+            String sql = "CREATE TABLE tblMontrangmieng(Tenmon Text primary key, Giatien Integer)";
+            dtbAccount_mon.execSQL(sql);
+        }
+        catch (Exception e) {
+            Log.e("Error", "Table đã có sẵn");
+        }
+        Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
+        Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
+        ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
+        arrMon = new ArrayList<>();
+        adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
+        LstVTenmon.setAdapter(adapMon);
+
+        btnThemmon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad1 = new AlertDialog.Builder(Admin.this);
+                LayoutInflater inflater1 = Admin.this.getLayoutInflater();
+                View dialog1 = inflater1.inflate(R.layout.manage_food, null);
+                ad1 .setView(dialog1);
+                AlertDialog b1 = ad1.create();
+                b1.show();
+                EditText edtTenmon = dialog1.findViewById(R.id.edtTenmon);
+                EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
+                Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
+                btnUpdateMon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String Tenmon = edtTenmon.getText().toString();
+                        int Giatien = Integer.parseInt(edtGiatien.getText().toString());
+                        ContentValues values = new ContentValues();
+                        values.put("Tenmon", Tenmon);
+                        values.put("Giatien", Giatien);
+                        String tb = "";
+                        if(dtbAccount_mon.insert("tblMontrangmieng", null, values) > 0){
+                            tb = "Thêm món ăn thành công";
+                        }
+                        else{
+                            tb = "Thêm món ăn không thành công";
+                        }
+                        Toast.makeText(Admin.this, tb, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnLammoimon1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrMon.clear();
+                Cursor cur = dtbAccount_mon.query("tblMontrangmieng", null, null, null, null, null, null);
+                if (cur != null && cur.moveToFirst()) {
+                    int indexTenmon = cur.getColumnIndex("Tenmon");
+                    int indexGiatien = cur.getColumnIndex("Giatien");
+
+                    if (indexTenmon >= 0 && indexGiatien >= 0) {
+                        do {
+                            String Tenmon = cur.getString(indexTenmon);
+                            int Giatien = cur.getInt(indexGiatien);
+                            String data = Tenmon + " - " + Giatien;
+                            arrMon.add(data);
+                        } while (cur.moveToNext());
+                    } else {
+                        Log.e("Error", "Tên cột không hợp lệ");
+                    }
+                }
+                if (cur != null) {
+                    cur.close();
+                }
+                adapMon.notifyDataSetChanged();
+            }
+        });
+    }
+    //Admin click vào đồ uống
+    public void Douong1(View view) {
+        AlertDialog.Builder ad = new AlertDialog.Builder(Admin.this);
+        LayoutInflater inflater = Admin.this.getLayoutInflater();
+        View dialog = inflater.inflate(R.layout.do_uong_admin, null);
+        ad.setView(dialog);
+        AlertDialog b = ad.create();
+        b.show();
+        dtbAccount_mon = openOrCreateDatabase("Food.db", MODE_PRIVATE, null);
+        try{
+            String sql = "CREATE TABLE tblDouong(Tenmon Text primary key, Giatien Integer)";
+            dtbAccount_mon.execSQL(sql);
+        }
+        catch (Exception e) {
+            Log.e("Error", "Table đã có sẵn");
+        }
+        Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
+        Button btnLammoimon1 = dialog.findViewById(R.id.btnLammoimon1);
+        ListView LstVTenmon = dialog.findViewById(R.id.LstVTenmon);
+        arrMon = new ArrayList<>();
+        adapMon = new ArrayAdapter<>(Admin.this, android.R.layout.simple_list_item_1, arrMon);
+        LstVTenmon.setAdapter(adapMon);
+
+        btnThemmon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad1 = new AlertDialog.Builder(Admin.this);
+                LayoutInflater inflater1 = Admin.this.getLayoutInflater();
+                View dialog1 = inflater1.inflate(R.layout.manage_food, null);
+                ad1 .setView(dialog1);
+                AlertDialog b1 = ad1.create();
+                b1.show();
+                EditText edtTenmon = dialog1.findViewById(R.id.edtTenmon);
+                EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
+                Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
+                btnUpdateMon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String Tenmon = edtTenmon.getText().toString();
+                        int Giatien = Integer.parseInt(edtGiatien.getText().toString());
+                        ContentValues values = new ContentValues();
+                        values.put("Tenmon", Tenmon);
+                        values.put("Giatien", Giatien);
+                        String tb = "";
+                        if(dtbAccount_mon.insert("tblDouong", null, values) > 0){
+                            tb = "Thêm món ăn thành công";
+                        }
+                        else{
+                            tb = "Thêm món ăn không thành công";
+                        }
+                        Toast.makeText(Admin.this, tb, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        btnLammoimon1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrMon.clear();
+                Cursor cur = dtbAccount_mon.query("tblDouong", null, null, null, null, null, null);
                 if (cur != null && cur.moveToFirst()) {
                     int indexTenmon = cur.getColumnIndex("Tenmon");
                     int indexGiatien = cur.getColumnIndex("Giatien");
