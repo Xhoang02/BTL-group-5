@@ -24,7 +24,7 @@ public class Creat_Account extends Activity {
     Button btnSignup;
     TextView txtVLogin;
 
-    //Khai báo Arraylist - Arrayadapter
+    //Khai báo Arraylist - Arrayadapters
     ArrayList<String> arrAccount;
     ArrayAdapter<String> adapAccount;
     SQLiteDatabase dtbAccount;
