@@ -48,16 +48,14 @@
                     android:text="Thêm TK"
                     android:id="@+id/btnThem"
                     android:layout_margin="5sp"
-                    android:background="@drawable/border_background"
-                    android:onClick="ThemTK"/>
+                    android:background="@drawable/border_background" />
                 <Button
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="Làm mới"
                     android:id="@+id/btnLammoi"
                     android:layout_margin="5sp"
-                    android:background="@drawable/border_background"
-                    android:onClick="Lammoi"/>
+                    android:background="@drawable/border_background"/>
             </TableRow>
         </TableLayout>
         <ListView
