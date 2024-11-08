@@ -1,5 +1,7 @@
 package com.example.btl_group5;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -24,10 +26,8 @@ public class Creat_Account extends Activity {
     Button btnSignup;
     TextView txtVLogin;
 
-    //Khai báo Arraylist - Arrayadapter
-    ArrayList<String> arrAccount;
-    ArrayAdapter<String> adapAccount;
-    SQLiteDatabase dtbAccount;
+    //Gọi datahelper
+    DatabaseHelper db = new DatabaseHelper(Creat_Account.this,DatabaseHelper.DATABASE_NAME,null,DatabaseHelper.DATABASE_VERSION);
 
     //Hàm viết code chính
     @SuppressLint("MissingInflatedId")
@@ -42,20 +42,6 @@ public class Creat_Account extends Activity {
         btnSignup = findViewById(R.id.btnSignup);
         txtVLogin = findViewById(R.id.txtVLogin);
 
-        //Khởi tạo Arraylist và Arrayadapter
-        arrAccount = new ArrayList<>();
-        adapAccount = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrAccount);
-        //Tạo CSDL
-        dtbAccount =openOrCreateDatabase("Account.db", MODE_PRIVATE, null);
-
-        //Tạo table để chứa dữ liệu
-        try{
-            String sql = "CREATE TABLE tblAccount(Username Text primary key, Email Text, Phone Integer, Password Text)";
-            dtbAccount.execSQL(sql);
-        }
-        catch (Exception e) {
-            Log.e("Error", "Table đã có sẵn");
-        }
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,22 +49,10 @@ public class Creat_Account extends Activity {
                 String Email = edtEmail.getText().toString();
                 int Phone = Integer.parseInt(edtPhone.getText().toString());
                 String Password = edtPassword.getText().toString();
-                ContentValues values = new ContentValues();
-                values.put("Username", Username);
-                values.put("Email", Email);
-                values.put("Phone", Phone);
-                values.put("Password", Password);
-                String tb = "";
-                if(dtbAccount.insert("tblAccount", null, values) > 0 ){
-                    tb = "Tạo tài khoản thành công";
-                    Intent i = new Intent(Creat_Account.this, Login.class);
-                    startActivity(i);
-                    finish();
-                }
-                else{
-                    tb = "Tạo tài khoản không thành công";
-                }
-                Toast.makeText(Creat_Account.this, tb, Toast.LENGTH_SHORT).show();
+                db.QueryData("INSERT INTO tblAccount (Username,Email,Phone,Password) VALUES (?, ? , ? , ?)",new String[]{Username,Email,String.valueOf(Phone),Password});
+                Toast.makeText(Creat_Account.this, "Tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Creat_Account.this, Login.class);
+                startActivity(i);
             }
         });
     }
