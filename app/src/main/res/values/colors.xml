@@ -5,4 +5,7 @@
     <color name="red">#FF6600</color>
     <color name="gray">#C8C7C7</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="primary">#FF5733</color>  <!-- Màu primary -->
+    <color name="gray_light">#D3D3D3</color>
+
 </resources>
