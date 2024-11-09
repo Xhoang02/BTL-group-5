@@ -26,16 +26,7 @@
                 android:text="Thêm món"
                 android:id="@+id/btnThemmon"
                 android:layout_margin="5sp"
-                android:background="@drawable/border_background"
-                android:onClick="Themmon"/>
-            <Button
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Làm mới"
-                android:id="@+id/btnLammoimon1"
-                android:layout_margin="5sp"
-                android:background="@drawable/border_background"
-                android:onClick="Lammoimon1"/>
+                android:background="@drawable/border_background"/>
         </TableRow>
     </TableLayout>
     <LinearLayout

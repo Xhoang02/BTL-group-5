@@ -46,10 +46,12 @@ public class Login extends Activity {
                     if (Username.equals("Admin") && Password.equals("admin")) {
                         Toast.makeText(Login.this, "Xin chào Admin", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(Login.this, Admin.class);
+                        i.putExtra("USERNAME", Username);
                         startActivity(i);
                     } else {
                         Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(Login.this, Home.class);
+                        i.putExtra("USERNAME", Username);
                         startActivity(i);
                     }
                 } else {

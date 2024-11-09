@@ -1,6 +1,5 @@
 package com.example.btl_group5;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,33 +10,52 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.btl_group5.adapters.DoUongAdapter;
+import com.example.btl_group5.adapters.KhaiViAdapter;
+import com.example.btl_group5.adapters.MonChinhAdapter;
+import com.example.btl_group5.adapters.SpinnerDoUongAdapter;
+import com.example.btl_group5.adapters.SpinnerKhaiViAdapter;
+import com.example.btl_group5.adapters.SpinnerMonChinhAdapter;
+import com.example.btl_group5.adapters.SpinnerTrangMiengAdapter;
+import com.example.btl_group5.adapters.TrangMiengAdapter;
+import com.example.btl_group5.models.DoUong;
+import com.example.btl_group5.models.KhaiVi;
+import com.example.btl_group5.models.MonChinh;
+import com.example.btl_group5.models.TrangMieng;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Fragment_food_admin extends Fragment {
     private DatabaseHelper db;
-    private ListView LstVAccount;
-    private ListView LstVAccount2;
-    private ListView LstVAccount3;
-    private ListView LstVAccount4;
-    private List<String> arrMon = new ArrayList<>();
-    private List<String> arrMon2 = new ArrayList<>();
-    private List<String> arrMon3 = new ArrayList<>();
-    private List<String> arrMon4 = new ArrayList<>();
-    private ArrayAdapter<String> adapMon;
-    private ArrayAdapter<String> adapMon2;
-    private ArrayAdapter<String> adapMon3;
-    private ArrayAdapter<String> adapMon4;
-
+    private ListView LstVKhaiVi;
+    private ListView LstVMonChinh;
+    private ListView LstVTrangMieng;
+    private ListView LstVDoUong;
+    private List<KhaiVi> khaiVis = new ArrayList<>();
+    private List<MonChinh> monChinhs = new ArrayList<>();
+    private List<TrangMieng> trangMiengs = new ArrayList<>();
+    private List<DoUong> doUongs = new ArrayList<>();
+    //private ArrayAdapter<String> adapMon;
+    private KhaiViAdapter khaiViAdapter;
+    private MonChinhAdapter monChinhAdapter;
+    private TrangMiengAdapter trangMiengAdapter;
+    private DoUongAdapter doUongAdapter;
+    private int[] imgs = {R.drawable.pho, R.drawable.suon, R.drawable.sup};
+    private int[] imgs1 = {R.drawable.garan, R.drawable.lauthai};
+    private int[] imgs2 = {R.drawable.banh, R.drawable.kem};
+    private int[] imgs3 = {R.drawable.coca, R.drawable.pepsi, R.drawable.lavie};
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_food_admin, container, false);
         db = new DatabaseHelper(getActivity(), DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
 
@@ -56,8 +74,9 @@ public class Fragment_food_admin extends Fragment {
                 b.show();
 
                 Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
-                LstVAccount = dialog.findViewById(R.id.LstVTenmon);
-                LstVAccount.setAdapter(adapMon);
+                LstVKhaiVi = dialog.findViewById(R.id.LstVTenmon);
+                khaiViAdapter = new KhaiViAdapter(getActivity(), khaiVis);
+                LstVKhaiVi.setAdapter(khaiViAdapter);
                 LoadDTKhaivi();
                 // Thêm món ăn mới
                 btnThemmon.setOnClickListener(new View.OnClickListener() {
@@ -74,14 +93,21 @@ public class Fragment_food_admin extends Fragment {
                         EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
                         Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
 
+                        Spinner sp1 = dialog1.findViewById(R.id.spinner);
+                        SpinnerKhaiViAdapter spinnerAdapter = new SpinnerKhaiViAdapter(getActivity());
+                        sp1.setAdapter(spinnerAdapter);
+
                         btnUpdateMon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String Tenmon = edtTenmon.getText().toString();
                                 int Giatien = Integer.parseInt(edtGiatien.getText().toString());
-                                db.QueryData("INSERT INTO tblKhaivi (Tenmon, Giatien) VALUES (?, ?)", new String[]{Tenmon, String.valueOf(Giatien)});
+                                String i = sp1.getSelectedItem().toString().trim();
+                                int anh = imgs[Integer.parseInt(i)];
+                                db.QueryData("INSERT INTO tblKhaivi (Tenmon, Giatien, Image) VALUES (?, ?, ?)", new String[]{Tenmon, String.valueOf(Giatien), String.valueOf(anh)});
                                 LoadDTKhaivi();
                                 Toast.makeText(getActivity(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
+                                b1.dismiss();
                             }
                         });
                     }
@@ -99,10 +125,10 @@ public class Fragment_food_admin extends Fragment {
                 b.show();
 
                 Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
-                LstVAccount2 = dialog.findViewById(R.id.LstVTenmon2);
-                LstVAccount2.setAdapter(adapMon2);
+                LstVMonChinh = dialog.findViewById(R.id.LstVTenmon2);
+                monChinhAdapter = new MonChinhAdapter(getActivity(), monChinhs);
+                LstVMonChinh.setAdapter(monChinhAdapter);
                 LoadDTMonchinh();
-                // Thêm món ăn mới
                 btnThemmon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -117,14 +143,21 @@ public class Fragment_food_admin extends Fragment {
                         EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
                         Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
 
+                        Spinner sp2 = dialog1.findViewById(R.id.spinner);
+                        SpinnerMonChinhAdapter spinnerAdapter = new SpinnerMonChinhAdapter(getActivity());
+                        sp2.setAdapter(spinnerAdapter);
+
                         btnUpdateMon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String Tenmon = edtTenmon.getText().toString();
                                 int Giatien = Integer.parseInt(edtGiatien.getText().toString());
-                                db.QueryData("INSERT INTO tblMonchinh (Tenmon, Giatien) VALUES (?, ?)", new String[]{Tenmon, String.valueOf(Giatien)});
+                                String i = sp2.getSelectedItem().toString().trim();
+                                int anh = imgs1[Integer.parseInt(i)];
+                                db.QueryData("INSERT INTO tblMonchinh (Tenmon, Giatien, Image) VALUES (?, ?, ?)", new String[]{Tenmon, String.valueOf(Giatien), String.valueOf(anh)});
                                 LoadDTMonchinh();
                                 Toast.makeText(getActivity(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
+                                b1.dismiss();
                             }
                         });
                     }
@@ -142,8 +175,9 @@ public class Fragment_food_admin extends Fragment {
                 b.show();
 
                 Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
-                LstVAccount3 = dialog.findViewById(R.id.LstVTenmon);
-                LstVAccount3.setAdapter(adapMon3);
+                LstVTrangMieng = dialog.findViewById(R.id.LstVTenmon);
+                trangMiengAdapter = new TrangMiengAdapter(getActivity(), trangMiengs);
+                LstVTrangMieng.setAdapter(trangMiengAdapter);
                 LoadDTMontrangmieng();
                 // Thêm món ăn mới
                 btnThemmon.setOnClickListener(new View.OnClickListener() {
@@ -160,14 +194,21 @@ public class Fragment_food_admin extends Fragment {
                         EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
                         Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
 
+                        Spinner sp3 = dialog1.findViewById(R.id.spinner);
+                        SpinnerTrangMiengAdapter spinnerAdapter = new SpinnerTrangMiengAdapter(getActivity());
+                        sp3.setAdapter(spinnerAdapter);
+
                         btnUpdateMon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String Tenmon = edtTenmon.getText().toString();
                                 int Giatien = Integer.parseInt(edtGiatien.getText().toString());
-                                db.QueryData("INSERT INTO tblMontrangmieng (Tenmon, Giatien) VALUES (?, ?)", new String[]{Tenmon, String.valueOf(Giatien)});
+                                String i = sp3.getSelectedItem().toString().trim();
+                                int anh = imgs2[Integer.parseInt(i)];
+                                db.QueryData("INSERT INTO tblMontrangmieng (Tenmon, Giatien, Image) VALUES (?, ?, ?)", new String[]{Tenmon, String.valueOf(Giatien), String.valueOf(anh)});
                                 LoadDTMontrangmieng();
                                 Toast.makeText(getActivity(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
+                                b1.dismiss();
                             }
                         });
                     }
@@ -185,8 +226,9 @@ public class Fragment_food_admin extends Fragment {
                 b.show();
 
                 Button btnThemmon = dialog.findViewById(R.id.btnThemmon);
-                LstVAccount4 = dialog.findViewById(R.id.LstVTenmon);
-                LstVAccount4.setAdapter(adapMon4);
+                LstVDoUong = dialog.findViewById(R.id.LstVTenmon);
+                doUongAdapter = new DoUongAdapter(getActivity(), doUongs);
+                LstVDoUong.setAdapter(doUongAdapter);
                 LoadDTDouong();
                 // Thêm món ăn mới
                 btnThemmon.setOnClickListener(new View.OnClickListener() {
@@ -203,14 +245,21 @@ public class Fragment_food_admin extends Fragment {
                         EditText edtGiatien = dialog1.findViewById(R.id.edtGiatien);
                         Button btnUpdateMon = dialog1.findViewById(R.id.btnUpdateMon);
 
+                        Spinner sp4 = dialog1.findViewById(R.id.spinner);
+                        SpinnerDoUongAdapter spinnerAdapter = new SpinnerDoUongAdapter(getActivity());
+                        sp4.setAdapter(spinnerAdapter);
+
                         btnUpdateMon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String Tenmon = edtTenmon.getText().toString();
                                 int Giatien = Integer.parseInt(edtGiatien.getText().toString());
-                                db.QueryData("INSERT INTO tblDouong (Tenmon, Giatien) VALUES (?, ?)", new String[]{Tenmon, String.valueOf(Giatien)});
+                                String i = sp4.getSelectedItem().toString().trim();
+                                int anh = imgs3[Integer.parseInt(i)];
+                                db.QueryData("INSERT INTO tblDouong (Tenmon, Giatien, Image) VALUES (?, ?, ?)", new String[]{Tenmon, String.valueOf(Giatien), String.valueOf(anh)});
                                 LoadDTDouong();
-                                Toast.makeText(getActivity(), "Thêm món ăn thành công", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Thêm đồ uống thành công", Toast.LENGTH_SHORT).show();
+                                b1.dismiss();
                             }
                         });
                     }
@@ -219,55 +268,64 @@ public class Fragment_food_admin extends Fragment {
         });
         return rootView;
     }
-    private void LoadDTKhaivi() {
-        arrMon.clear();
+
+    public void LoadDTKhaivi() {
+        khaiVis.clear();
         Cursor cursor = db.getData("SELECT * FROM tblKhaivi", null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                String cd = cursor.getString(0) + " - " + cursor.getInt(1);
-                arrMon.add(cd);
-            } while(cursor.moveToNext());
+                int id = cursor.getInt(0);
+                String ten_mon = cursor.getString(1);
+                int gia = cursor.getInt(2);
+                int anh = cursor.getInt(3);
+                khaiVis.add(new KhaiVi(id, anh, ten_mon, gia));
+            } while (cursor.moveToNext());
         }
-        adapMon = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrMon);
-        LstVAccount.setAdapter(adapMon);
+        khaiViAdapter.notifyDataSetChanged();
     }
 
     private void LoadDTMonchinh() {
-        arrMon2.clear();
+        monChinhs.clear();
         Cursor cursor = db.getData("SELECT * FROM tblMonchinh", null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                String cd = cursor.getString(0) + " - " + cursor.getInt(1);
-                arrMon2.add(cd);
-            } while(cursor.moveToNext());
+                int id = cursor.getInt(0);
+                String ten_mon = cursor.getString(1);
+                int gia = cursor.getInt(2);
+                int anh = cursor.getInt(3);
+                monChinhs.add(new MonChinh(id, anh, ten_mon, gia));
+            } while (cursor.moveToNext());
         }
-        adapMon2 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrMon2);
-        LstVAccount2.setAdapter(adapMon2);
+        monChinhAdapter.notifyDataSetChanged();
     }
 
     private void LoadDTMontrangmieng() {
-        arrMon3.clear();
+        trangMiengs.clear();
         Cursor cursor = db.getData("SELECT * FROM tblMontrangmieng", null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                String cd = cursor.getString(0) + " - " + cursor.getInt(1);
-                arrMon3.add(cd);
-            } while(cursor.moveToNext());
+                int id = cursor.getInt(0);
+                String ten_mon = cursor.getString(1);
+                int gia = cursor.getInt(2);
+                int anh = cursor.getInt(3);
+                trangMiengs.add(new TrangMieng(id, anh, ten_mon, gia));
+            } while (cursor.moveToNext());
         }
-        adapMon3 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrMon3);
-        LstVAccount3.setAdapter(adapMon3);
+        trangMiengAdapter.notifyDataSetChanged();
     }
 
     private void LoadDTDouong() {
-        arrMon4.clear();
+        doUongs.clear();
         Cursor cursor = db.getData("SELECT * FROM tblDouong", null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                String cd = cursor.getString(0) + " - " + cursor.getInt(1);
-                arrMon4.add(cd);
-            } while(cursor.moveToNext());
+                int id = cursor.getInt(0);
+                String ten_mon = cursor.getString(1);
+                int gia = cursor.getInt(2);
+                int anh = cursor.getInt(3);
+                doUongs.add(new DoUong(id, anh, ten_mon, gia));
+            } while (cursor.moveToNext());
         }
-        adapMon4 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrMon4);
-        LstVAccount4.setAdapter(adapMon4);
+        doUongAdapter.notifyDataSetChanged();
     }
 }

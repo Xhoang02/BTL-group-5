@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,6 +39,17 @@ public class Fragment_account_admin extends Fragment {
         Button btnThem = rootView.findViewById(R.id.btnThem);
         LstVAccount = rootView.findViewById(R.id.LstVAccount);
         LoadDT();
+
+        //Button đăng xuất
+        Button btndangxuat = rootView.findViewById(R.id.btndangxuat);
+        btndangxuat.setOnClickListener(v -> {
+            // Chuyển hướng về màn hình chính (LoginActivity trong ví dụ này)
+            Intent intent = new Intent(getActivity(), Welcome.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish();
+            Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+        });
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

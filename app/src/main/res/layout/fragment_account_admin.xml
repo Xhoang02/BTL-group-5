@@ -63,7 +63,11 @@
             android:layout_height="300dp"
             android:layout_marginTop="10dp"
             android:id="@+id/LstVAccount">
-
         </ListView>
+        <Button
+            android:id="@+id/btndangxuat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất" />
     </LinearLayout>
 </LinearLayout>

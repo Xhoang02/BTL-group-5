@@ -43,8 +43,7 @@
                     android:background="@drawable/radius_ic"
                     android:layout_margin="5dp"
                     android:orientation="vertical"
-                    android:id="@+id/lnKhaivi"
-                    android:onClick="Khaivi">
+                    android:id="@+id/lnKhaivi">
                     <ImageView
                         android:layout_marginTop="15dp"
                         android:layout_width="80dp"
@@ -64,8 +63,7 @@
                     android:background="@drawable/radius_ic"
                     android:layout_margin="5dp"
                     android:orientation="vertical"
-                    android:id="@+id/lnMonchinh"
-                    android:onClick="Monchinh">
+                    android:id="@+id/lnMonchinh">
 
                     <ImageView
                         android:layout_marginTop="15dp"
@@ -96,8 +94,7 @@
                     android:background="@drawable/radius_ic"
                     android:layout_margin="5dp"
                     android:orientation="vertical"
-                    android:id="@+id/lnMontrangmieng"
-                    android:onClick="Montrangmieng">
+                    android:id="@+id/lnMontrangmieng">
                     <ImageView
                         android:layout_marginTop="15dp"
                         android:layout_width="80dp"
@@ -117,8 +114,7 @@
                     android:background="@drawable/radius_ic"
                     android:layout_margin="5dp"
                     android:orientation="vertical"
-                    android:id="@+id/lnDouong"
-                    android:onClick="Douong">
+                    android:id="@+id/lnDouong">
                     <ImageView
                         android:layout_marginTop="15dp"
                         android:layout_width="80dp"

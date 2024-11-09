@@ -24,13 +24,6 @@
                 android:src="@drawable/ic_profile_placeholder"
                 android:layout_gravity="center"
                 android:padding="8dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thay đổi"
-                android:textSize="16sp"
-                android:paddingTop="8dp"/>
         </LinearLayout>
 
         <!-- Information Fields -->
@@ -38,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray_light" />
-
         <!-- Phone Number -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,80 +187,10 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
-
-        <!-- Địa chỉ hiện tại -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/text_address_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Địa chỉ hiện tại"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/text_address_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cập nhật địa chỉ hiện tại"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/edit_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Cập nhật địa chỉ hiện tại"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray_light" />
-
-        <!-- Nghề nghiệp -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/text_job_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nghề nghiệp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/text_job_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cập nhật nghề nghiệp"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/edit_job"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Cập nhật nghề nghiệp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
         <!-- The Edit Button -->
         <Button
             android:id="@+id/btn_edit"
@@ -279,5 +201,10 @@
             android:background="@color/primary"
             android:layout_marginTop="16dp"
             android:padding="16dp"/>
+        <Button
+            android:id="@+id/btndangxuat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất" />
     </LinearLayout>
 </ScrollView>
