@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import java.util.List;
 public class Fragment_account_admin extends Fragment {
     private DatabaseHelper db;
     private ListView LstVAccount;
+    private SearchView searchView;
     private ArrayAdapter<String> adap;
     private List<String> acc = new ArrayList<>();
 
@@ -38,6 +40,7 @@ public class Fragment_account_admin extends Fragment {
 
         Button btnThem = rootView.findViewById(R.id.btnThem);
         LstVAccount = rootView.findViewById(R.id.LstVAccount);
+        searchView = rootView.findViewById(R.id.searchView);
         LoadDT();
 
         //Button đăng xuất
@@ -145,6 +148,20 @@ public class Fragment_account_admin extends Fragment {
                         })
                         .setNegativeButton("Không", null)
                         .show();
+                return true;
+            }
+        });
+
+        // Sự kiện tìm kiếm
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // Không cần làm gì khi nhấn Enter
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adap.getFilter().filter(newText); // Lọc danh sách theo từ khóa
                 return true;
             }
         });

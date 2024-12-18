@@ -33,7 +33,6 @@ public class Fragment_shopping_admin extends Fragment {
         cartItems = new ArrayList<>();
         LoadDTShoppingCart();
 
-        // Thiết lập OnItemClickListener cho ListView
         cart_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,7 +79,7 @@ public class Fragment_shopping_admin extends Fragment {
 
                 String Username = itemDetails[0];
                 String Tenmon = itemDetails[1];
-                int Giatien;
+                int Giatien = Integer.parseInt(itemDetails[2]);
                 try {
                     Giatien = Integer.parseInt(itemDetails[2]);
                 } catch (NumberFormatException e) {

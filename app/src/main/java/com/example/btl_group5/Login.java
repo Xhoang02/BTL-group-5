@@ -78,80 +78,68 @@ public class Login extends Activity {
         AlertDialog b = ad.create();
         b.show();
 
-//        btnReset.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String Username = edtUsernameFG.getText().toString().trim();
-//                String Email = edtEmailFG.getText().toString().trim();
-//                String PhoneString = edtPhoneFG.getText().toString().trim();
-//
-//                if (Username.isEmpty() || Email.isEmpty() || PhoneString.isEmpty()) {
-//                    Toast.makeText(Login.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                int Phone;
-//                try {
-//                    Phone = Integer.parseInt(PhoneString);
-//                } catch (NumberFormatException e) {
-//                    Toast.makeText(Login.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                ContentValues values = new ContentValues();
-//                values.put("Username", Username);
-//                values.put("Email", Email);
-//                values.put("Phone", Phone);
-//                String selections = "Username = ? AND Email = ? AND Phone = ?";
-//                String[] selectionArgs = new String[] {Username, Email, PhoneString};
-//                Cursor cur = dtbAccount.query("tblAccount", null, selections, selectionArgs, null, null, null);
-//
-//                if (cur != null && cur.moveToFirst()) {
-//                    Toast.makeText(Login.this, "Hãy cập nhật lại mật khẩu của bạn", Toast.LENGTH_SHORT).show();
-//                    // Cập nhật cửa sổ mới để reset password
-//                    b.dismiss();
-//                    AlertDialog.Builder ad1 = new AlertDialog.Builder(Login.this);
-//                    LayoutInflater inflater1 = Login.this.getLayoutInflater();
-//                    View dialog1 = inflater1.inflate(R.layout.reset_password, null);
-//                    ad1.setView(dialog1);
-//                    AlertDialog b1 = ad1.create();
-//                    b1.show();
-//                    EditText edtPasswordRS = dialog1.findViewById(R.id.edtPasswordRS);
-//                    EditText edtPasswordRS_RS = dialog1.findViewById(R.id.edtPasswordRS_RS);
-//                    Button btnUpdatePass = dialog1.findViewById(R.id.btnUpdatePass);
-//
-//                    btnUpdatePass.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            String PasswordRS = edtPasswordRS.getText().toString().trim();
-//                            String PasswordRS_RS = edtPasswordRS_RS.getText().toString().trim();
-//
-//                            if (PasswordRS.isEmpty() || PasswordRS_RS.isEmpty()) {
-//                                Toast.makeText(Login.this, "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//
-//                            if (!PasswordRS.equals(PasswordRS_RS)) {
-//                                Toast.makeText(Login.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//
-//                            ContentValues values1 = new ContentValues();
-//                            values1.put("Password", PasswordRS);
-//                            int n = dtbAccount.update("tblAccount", values1, "Username = ?", new String[] {Username});
-//                            String msg = (n == 0) ? "Cập nhật mật khẩu không thành công" : "Cập nhật mật khẩu thành công";
-//                            Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else {
-//                    Toast.makeText(Login.this, "Thông tin không đúng", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                if (cur != null) {
-//                    cur.close();
-//                }
-//            }
-//        });
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Username = edtUsernameFG.getText().toString().trim();
+                String Email = edtEmailFG.getText().toString().trim();
+                String PhoneString = edtPhoneFG.getText().toString().trim();
+                if (Username.isEmpty() || Email.isEmpty() || PhoneString.isEmpty()) {
+                    Toast.makeText(Login.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int Phone;
+                try {
+                    Phone = Integer.parseInt(PhoneString);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(Login.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                DatabaseHelper dbHelper = new DatabaseHelper(Login.this, DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
+                String selections = "Username = ? AND Email = ? AND Phone = ?";
+                String[] selectionArgs = new String[] {Username, Email, PhoneString};
+                Cursor cur = dbHelper.getData("SELECT * FROM tblAccount WHERE " + selections, selectionArgs);
+
+                if (cur != null && cur.moveToFirst()) {
+                    Toast.makeText(Login.this, "Hãy cập nhật lại mật khẩu của bạn", Toast.LENGTH_SHORT).show();
+                    b.dismiss();
+                    AlertDialog.Builder ad1 = new AlertDialog.Builder(Login.this);
+                    LayoutInflater inflater1 = Login.this.getLayoutInflater();
+                    View dialog1 = inflater1.inflate(R.layout.reset_password, null);
+                    ad1.setView(dialog1);
+                    AlertDialog b1 = ad1.create();
+                    b1.show();
+                    EditText edtPasswordRS = dialog1.findViewById(R.id.edtPasswordRS);
+                    EditText edtPasswordRS_RS = dialog1.findViewById(R.id.edtPasswordRS_RS);
+                    Button btnUpdatePass = dialog1.findViewById(R.id.btnUpdatePass);
+
+                    btnUpdatePass.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String PasswordRS = edtPasswordRS.getText().toString().trim();
+                            String PasswordRS_RS = edtPasswordRS_RS.getText().toString().trim();
+                            if (PasswordRS.isEmpty() || PasswordRS_RS.isEmpty()) {
+                                Toast.makeText(Login.this, "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            if (!PasswordRS.equals(PasswordRS_RS)) {
+                                Toast.makeText(Login.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            dbHelper.QueryData("UPDATE tblAccount SET Password = ? WHERE Username = ?", new String[]{PasswordRS, Username});
+                            Toast.makeText(Login.this, "Cập nhật mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                            b1.dismiss();
+                        }
+                    });
+                } else {
+                    Toast.makeText(Login.this, "Thông tin không đúng", Toast.LENGTH_SHORT).show();
+                }
+                if (cur != null) {
+                    cur.close();
+                }
+            }
+        });
     }
 
     public void Signup(View view) {

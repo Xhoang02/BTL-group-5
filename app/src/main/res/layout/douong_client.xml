@@ -14,10 +14,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/LsvDouong"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Làm mới dữ liệu"
-        android:layout_gravity="center"
-        android:id="@+id/btnLammoidulieu"/>
 </LinearLayout>
